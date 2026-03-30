@@ -468,10 +468,10 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
         ${busy ? "opacity-50 pointer-events-none" : ""}`}>
 
         {/* TOP ROW */}
-        <div className="flex items-center gap-4 px-5 py-4 cursor-pointer select-none" onClick={() => setExpanded(v => !v)}>
-          <GripVertical className="w-4 h-4 text-slate-200 group-hover:text-slate-300 flex-shrink-0 cursor-grab" onClick={e => e.stopPropagation()} />
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 cursor-pointer select-none" onClick={() => setExpanded(v => !v)}>
+          <GripVertical className="hidden sm:block w-4 h-4 text-slate-200 group-hover:text-slate-300 flex-shrink-0 cursor-grab" onClick={e => e.stopPropagation()} />
 
-          <div className="relative flex-shrink-0" onClick={e => e.stopPropagation()}>
+          <div className="relative flex-shrink-0 order-1" onClick={e => e.stopPropagation()}>
             <PriorityBadge priorityId={task.priority} disabled={isBoss} onClick={isBoss ? undefined : () => setPriorityOpen(v => !v)} />
             {!isBoss && priorityOpen && (
               <><div className="fixed inset-0 z-40" onClick={() => setPriorityOpen(false)} />
@@ -479,7 +479,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
             )}
           </div>
 
-          <span className={`flex-1 text-base font-semibold leading-snug min-w-0 truncate ${isDone ? "line-through text-slate-500" : "text-slate-900"}`}>
+          <span className={`order-2 basis-full sm:basis-auto sm:flex-1 text-sm sm:text-base font-semibold leading-snug min-w-0 break-words ${isDone ? "line-through text-slate-500" : "text-slate-900"}`}>
             {task.title}
           </span>
 
@@ -488,7 +488,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
           {isBoss && isKeSchvaleni && !task.approved && <span className="hidden sm:flex items-center gap-1 text-xs font-bold text-violet-700 bg-violet-100 border border-violet-300 rounded-full px-2.5 py-0.5 flex-shrink-0 animate-pulse"><Shield className="w-3 h-3" />Ke schválení</span>}
           {atts.length > 0 && <span className="hidden sm:flex items-center gap-1 text-xs text-slate-400 flex-shrink-0"><Paperclip className="w-3 h-3" />{atts.length}</span>}
 
-          <div className="relative flex-shrink-0" onClick={e => e.stopPropagation()}>
+          <div className="relative flex-shrink-0 order-3" onClick={e => e.stopPropagation()}>
             <StatusBadge statusId={task.status} disabled={isBoss} onClick={isBoss ? undefined : () => setStatusOpen(v => !v)} />
             {!isBoss && statusOpen && (
               <><div className="fixed inset-0 z-40" onClick={() => setStatusOpen(false)} />
@@ -496,11 +496,11 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
             )}
           </div>
 
-          <ChevronDown className={`w-4 h-4 text-slate-300 transition-transform flex-shrink-0 ${expanded ? "rotate-180 text-slate-500" : ""}`} />
+          <ChevronDown className={`order-4 ml-auto sm:ml-0 w-4 h-4 text-slate-300 transition-transform flex-shrink-0 ${expanded ? "rotate-180 text-slate-500" : ""}`} />
 
           {!isBoss && (
             <button onClick={e => { e.stopPropagation(); onDelete(task.id); }} aria-label={`Smazat úkol ${task.title}`}
-              className="inline-flex items-center justify-center min-w-9 min-h-9 p-2 rounded-lg text-slate-300 hover:text-red-400 hover:bg-red-50 transition-all duration-150 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-red-300">
+              className="order-5 inline-flex items-center justify-center min-w-9 min-h-9 p-2 rounded-lg text-slate-300 hover:text-red-400 hover:bg-red-50 transition-all duration-150 opacity-100 sm:opacity-0 group-hover:opacity-100 focus-visible:opacity-100 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-red-300">
               <Trash2 className="w-4 h-4" />
             </button>
           )}
@@ -563,7 +563,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
                   {atts.map((att, idx) => {
                     const img = isImageFile(att.name || "");
                     return (
-                      <div key={idx} className="group/att relative flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 hover:border-slate-300 transition-all max-w-[200px]">
+                      <div key={idx} className="group/att relative flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 hover:border-slate-300 transition-all max-w-full sm:max-w-[200px]">
                         {img
                           ? <button onClick={() => setLightbox(att.url)} className="flex items-center gap-1.5 min-w-0"><Image className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" /><span className="truncate">{att.name}</span><Eye className="w-3 h-3 text-slate-300 flex-shrink-0" /></button>
                           : <a href={att.url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 min-w-0"><FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" /><span className="truncate">{att.name}</span><ExternalLink className="w-3 h-3 text-slate-300 flex-shrink-0" /></a>
@@ -578,7 +578,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
                 <>
                   <input ref={fileRef} type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.zip" className="hidden" onChange={handleFile} />
                   <button onClick={() => fileRef.current?.click()} disabled={uploading}
-                    className="flex items-center gap-2 min-h-10 text-xs font-medium text-slate-600 bg-white border border-dashed border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-xl px-4 py-2 transition-all duration-150 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
+                    className="w-full sm:w-auto flex items-center justify-center sm:justify-start gap-2 min-h-10 text-xs font-medium text-slate-600 bg-white border border-dashed border-slate-300 hover:border-slate-400 hover:bg-slate-50 rounded-xl px-4 py-2 transition-all duration-150 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                     {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Paperclip className="w-3.5 h-3.5" />}
                     {uploading ? "Nahrávám…" : "Přiložit soubor nebo obrázek"}
                   </button>
@@ -701,7 +701,7 @@ export default function App() {
   const pendingBoss   = tasks.filter(t => t.status === "ke-schvaleni" && !t.approved).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100/70" style={{ fontFamily: "'DM Sans','Helvetica Neue',Arial,sans-serif" }}>
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100/70" style={{ fontFamily: "'DM Sans','Helvetica Neue',Arial,sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap');
         @keyframes fade-up  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
@@ -752,8 +752,8 @@ export default function App() {
 
       {/* HEADER */}
       <header className={`border-b sticky top-0 z-30 transition-all duration-300 backdrop-blur-md shadow-sm ${isBoss ? "bg-gradient-to-r from-violet-900/95 to-indigo-900/95 border-violet-700" : "bg-white/90 border-slate-200"}`}>
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 flex-1 min-w-0 sm:pr-2">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors shadow-sm ${isBoss ? "bg-white/20" : "bg-slate-900"}`}>
               {isBoss ? <Shield className="w-4 h-4 text-white" /> : <Briefcase className="w-4 h-4 text-white" />}
             </div>
@@ -777,19 +777,19 @@ export default function App() {
             {overdueCount  > 0 && <div className={`flex items-center gap-1 px-2 py-1 rounded-lg border text-xs font-semibold ${isBoss ? "bg-red-500/20 border-red-400/30 text-red-300" : "bg-red-50 text-red-600 border-red-200"}`}><Calendar className="w-3 h-3" />{overdueCount}</div>}
           </div>
 
-          <div className={`flex items-center gap-2 flex-shrink-0 pl-3 border-l ${isBoss ? "border-white/20" : "border-slate-200/80"}`}>
+          <div className={`flex items-center flex-wrap sm:flex-nowrap justify-end gap-2 w-full sm:w-auto flex-shrink-0 pt-2 sm:pt-0 sm:pl-3 border-t sm:border-t-0 sm:border-l ${isBoss ? "border-white/20" : "border-slate-200/80"}`}>
             <div title={synced ? "Připojeno" : "Odpojeno"}
               className={`p-1.5 rounded-xl border transition-all ${synced ? isBoss ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300" : "border-emerald-200 bg-emerald-50 text-emerald-600" : isBoss ? "border-white/10 text-white/30" : "border-slate-200 bg-white text-slate-300"}`}>
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : synced ? <Cloud className="w-4 h-4" /> : <CloudOff className="w-4 h-4" />}
             </div>
             {!isBoss && (
               <button onClick={() => exportCSV(tasks)}
-                className="flex items-center gap-1.5 min-h-9 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:border-slate-400 hover:bg-slate-50 px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
+                className="flex items-center justify-center gap-1.5 min-h-9 text-[11px] sm:text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:border-slate-400 hover:bg-slate-50 px-2.5 sm:px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                 <Download className="w-3.5 h-3.5" />CSV
               </button>
             )}
             <button onClick={() => setShowShare(true)}
-              className={`flex items-center gap-1.5 min-h-9 text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isBoss ? "bg-white text-violet-700 hover:bg-violet-50 focus-visible:ring-violet-300" : "text-white bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 focus-visible:ring-slate-400"}`}>
+              className={`flex items-center justify-center gap-1.5 min-h-9 text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isBoss ? "bg-white text-violet-700 hover:bg-violet-50 focus-visible:ring-violet-300" : "text-white bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 focus-visible:ring-slate-400"}`}>
               <Link className="w-3.5 h-3.5" />Sdílet
             </button>
             <RoleSwitcher role={role} onSwitch={switchRole} />
@@ -797,7 +797,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-3xl mx-auto px-3 sm:px-6 py-6 sm:py-8 space-y-5 sm:space-y-6">
 
         {error && <DbErrorPanel errorMsg={error} onRetry={loadTasks} />}
 
@@ -830,7 +830,7 @@ export default function App() {
         {!isBoss && <AddTaskPanel onAdd={addTask} loading={loading} />}
 
         {/* Filters + Sort */}
-        <div className="flex items-center gap-2 flex-wrap bg-white/80 border border-slate-200 rounded-2xl px-4 py-3 shadow-sm">
+        <div className="flex items-center gap-2 flex-wrap bg-white/80 border border-slate-200 rounded-2xl px-3 sm:px-4 py-3 shadow-sm">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider"><Filter className="w-3 h-3" />Filtr</span>
           {STATUSES.map(s => (
             <button key={s.id} onClick={() => setFilters(p => p.includes(s.id) ? p.filter(f => f !== s.id) : [...p, s.id])}
@@ -841,8 +841,8 @@ export default function App() {
             </button>
           ))}
           {filters.length > 0 && <button onClick={() => setFilters([])} className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600"><X className="w-3 h-3" />Zrušit</button>}
-          <div className="relative ml-auto">
-            <button onClick={() => setSortOpen(v => !v)} className="flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-white border border-slate-300 hover:border-slate-400 rounded-full px-3 py-1.5 shadow-sm">
+          <div className="relative w-full sm:w-auto sm:ml-auto">
+            <button onClick={() => setSortOpen(v => !v)} className="w-full sm:w-auto flex items-center justify-center gap-1.5 text-xs font-medium text-slate-600 bg-white border border-slate-300 hover:border-slate-400 rounded-full px-3 py-1.5 shadow-sm">
               <ArrowUpDown className="w-3 h-3" />{SORT_OPTIONS.find(o => o.id === sortBy)?.label}
             </button>
             {sortOpen && (<><div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />
