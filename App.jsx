@@ -509,6 +509,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
         {/* DETAIL */}
         {expanded && (
           <div className="border-t border-slate-200/80 bg-slate-50/35 px-5 py-4 space-y-4">
+          <div className="border-t border-slate-100 px-4 py-4 space-y-4">
 
             {isBoss && (
               <div>
