@@ -240,11 +240,11 @@ function RoleSwitcher({ role, onSwitch }) {
     <button onClick={onSwitch}
       title={isBoss ? "Přepnout do pracovního módu" : "Přepnout do šéfského módu"}
       aria-label={isBoss ? "Přepnout do pracovního módu" : "Přepnout do šéfského módu"}
-      className={`flex items-center gap-1.5 min-h-9 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all duration-150 active:scale-95
+      className={`flex items-center gap-1.5 min-h-9 text-xs font-bold px-3 py-1.5 rounded-xl border shadow-sm transition-all duration-150 active:scale-95
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isBoss ? "focus-visible:ring-violet-300" : "focus-visible:ring-slate-300"}
         ${isBoss
           ? "bg-violet-100 border-violet-300 text-violet-700 hover:bg-violet-200"
-          : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"}`}>
+          : "bg-white border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-slate-50"}`}>
       {isBoss ? <><UserCheck className="w-3.5 h-3.5" />Šéf</> : <><User className="w-3.5 h-3.5" />Pracant</>}
     </button>
   );
@@ -291,7 +291,7 @@ function AddTaskPanel({ onAdd, loading }) {
   };
 
   return (
-    <div className={`bg-white border rounded-2xl shadow-sm transition-all duration-200 ${expanded ? "border-blue-200 shadow-blue-50/80" : "border-slate-200"}`}>
+    <div className={`bg-white/95 border rounded-2xl shadow-md transition-all duration-200 ${expanded ? "border-blue-300 shadow-blue-100/70 ring-2 ring-blue-100" : "border-slate-200/90 hover:border-slate-300"}`}>
       <div className="flex gap-3 p-4">
         <div className="flex-1 min-w-0">
           <input ref={inputRef} type="text" value={title}
@@ -327,7 +327,7 @@ function AddTaskPanel({ onAdd, loading }) {
         </div>
         <div className="flex flex-col gap-2 flex-shrink-0">
           <button onClick={handleAdd} disabled={!canAdd || loading}
-            className="flex items-center gap-1.5 min-h-10 text-sm font-bold text-white bg-slate-900 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed px-4 py-2 rounded-xl transition-all duration-150 active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-400">
+            className="flex items-center gap-1.5 min-h-10 text-sm font-bold text-white bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 disabled:opacity-30 disabled:cursor-not-allowed px-4 py-2 rounded-xl shadow-sm transition-all duration-150 active:scale-95 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-400">
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}Přidat
           </button>
           {expanded && (
@@ -460,15 +460,15 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
   return (
     <>
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
-      <div className={`group bg-white border rounded-2xl transition-all duration-200 hover:shadow-md
+      <div className={`group bg-white/95 border rounded-2xl shadow-sm transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5
         ${task.approved ? "border-emerald-300 bg-gradient-to-r from-emerald-50/30 to-white"
-          : isBoss && isKeSchvaleni ? "border-violet-300 bg-violet-50/20 boss-pending"
-          : "border-slate-200 hover:border-slate-300"}
+          : isBoss && isKeSchvaleni ? "border-violet-300 bg-violet-50/30 boss-pending"
+          : "border-slate-200/90 hover:border-slate-300"}
         ${isDone && !task.approved ? "opacity-55" : ""}
         ${busy ? "opacity-50 pointer-events-none" : ""}`}>
 
         {/* TOP ROW */}
-        <div className="flex items-center gap-4 px-4 py-4 cursor-pointer select-none" onClick={() => setExpanded(v => !v)}>
+        <div className="flex items-center gap-4 px-5 py-4 cursor-pointer select-none" onClick={() => setExpanded(v => !v)}>
           <GripVertical className="w-4 h-4 text-slate-200 group-hover:text-slate-300 flex-shrink-0 cursor-grab" onClick={e => e.stopPropagation()} />
 
           <div className="relative flex-shrink-0" onClick={e => e.stopPropagation()}>
@@ -479,7 +479,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
             )}
           </div>
 
-          <span className={`flex-1 text-[15px] font-semibold leading-snug min-w-0 truncate ${isDone ? "line-through text-slate-500" : "text-slate-900"}`}>
+          <span className={`flex-1 text-base font-semibold leading-snug min-w-0 truncate ${isDone ? "line-through text-slate-500" : "text-slate-900"}`}>
             {task.title}
           </span>
 
@@ -508,7 +508,7 @@ function TaskRow({ task, onChange, onDelete, busy, notify, isBoss }) {
 
         {/* DETAIL */}
         {expanded && (
-          <div className="border-t border-slate-100 px-4 py-4 space-y-4">
+          <div className="border-t border-slate-200/80 bg-slate-50/35 px-5 py-4 space-y-4">
 
             {isBoss && (
               <div>
@@ -701,7 +701,7 @@ export default function App() {
   const pendingBoss   = tasks.filter(t => t.status === "ke-schvaleni" && !t.approved).length;
 
   return (
-    <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'DM Sans','Helvetica Neue',Arial,sans-serif" }}>
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100/70" style={{ fontFamily: "'DM Sans','Helvetica Neue',Arial,sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap');
         @keyframes fade-up  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
@@ -751,17 +751,17 @@ export default function App() {
       )}
 
       {/* HEADER */}
-      <header className={`border-b sticky top-0 z-30 transition-all duration-300 ${isBoss ? "bg-gradient-to-r from-violet-900 to-indigo-900 border-violet-800" : "bg-white border-slate-200"}`}>
+      <header className={`border-b sticky top-0 z-30 transition-all duration-300 backdrop-blur-md shadow-sm ${isBoss ? "bg-gradient-to-r from-violet-900/95 to-indigo-900/95 border-violet-700" : "bg-white/90 border-slate-200"}`}>
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
-            <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${isBoss ? "bg-white/15" : "bg-slate-900"}`}>
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors shadow-sm ${isBoss ? "bg-white/20" : "bg-slate-900"}`}>
               {isBoss ? <Shield className="w-4 h-4 text-white" /> : <Briefcase className="w-4 h-4 text-white" />}
             </div>
             <div className="min-w-0">
-              <h1 className={`text-base font-bold leading-none transition-colors ${isBoss ? "text-white" : "text-slate-900"}`}>
+              <h1 className={`text-lg font-bold leading-none transition-colors ${isBoss ? "text-white" : "text-slate-900"}`}>
                 {isBoss ? "Šéfský mód" : "Status Report"}
               </h1>
-              <p className={`text-sm mt-1 truncate transition-colors ${isBoss ? "text-violet-100" : "text-slate-600"}`}>
+              <p className={`text-sm mt-1 truncate transition-colors ${isBoss ? "text-violet-100/95" : "text-slate-600"}`}>
                 {isBoss ? `${pendingBoss > 0 ? `${pendingBoss} ke schválení · ` : ""}${today}` : today}
               </p>
             </div>
@@ -784,12 +784,12 @@ export default function App() {
             </div>
             {!isBoss && (
               <button onClick={() => exportCSV(tasks)}
-                className="flex items-center gap-1.5 min-h-9 text-xs font-semibold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 px-3 py-1.5 rounded-xl transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
+                className="flex items-center gap-1.5 min-h-9 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:border-slate-400 hover:bg-slate-50 px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-300">
                 <Download className="w-3.5 h-3.5" />CSV
               </button>
             )}
             <button onClick={() => setShowShare(true)}
-              className={`flex items-center gap-1.5 min-h-9 text-xs font-bold px-3 py-1.5 rounded-xl transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isBoss ? "bg-white text-violet-700 hover:bg-violet-50 focus-visible:ring-violet-300" : "text-white bg-slate-900 hover:bg-slate-700 focus-visible:ring-slate-400"}`}>
+              className={`flex items-center gap-1.5 min-h-9 text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm transition-all duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isBoss ? "bg-white text-violet-700 hover:bg-violet-50 focus-visible:ring-violet-300" : "text-white bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 focus-visible:ring-slate-400"}`}>
               <Link className="w-3.5 h-3.5" />Sdílet
             </button>
             <RoleSwitcher role={role} onSwitch={switchRole} />
@@ -830,7 +830,7 @@ export default function App() {
         {!isBoss && <AddTaskPanel onAdd={addTask} loading={loading} />}
 
         {/* Filters + Sort */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap bg-white/80 border border-slate-200 rounded-2xl px-4 py-3 shadow-sm">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider"><Filter className="w-3 h-3" />Filtr</span>
           {STATUSES.map(s => (
             <button key={s.id} onClick={() => setFilters(p => p.includes(s.id) ? p.filter(f => f !== s.id) : [...p, s.id])}
@@ -842,7 +842,7 @@ export default function App() {
           ))}
           {filters.length > 0 && <button onClick={() => setFilters([])} className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600"><X className="w-3 h-3" />Zrušit</button>}
           <div className="relative ml-auto">
-            <button onClick={() => setSortOpen(v => !v)} className="flex items-center gap-1.5 text-xs font-medium text-slate-500 bg-white border border-slate-200 hover:border-slate-300 rounded-full px-2.5 py-1">
+            <button onClick={() => setSortOpen(v => !v)} className="flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-white border border-slate-300 hover:border-slate-400 rounded-full px-3 py-1.5 shadow-sm">
               <ArrowUpDown className="w-3 h-3" />{SORT_OPTIONS.find(o => o.id === sortBy)?.label}
             </button>
             {sortOpen && (<><div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />
@@ -869,7 +869,7 @@ export default function App() {
           ))}
         </div>
 
-        <p className="text-center text-xs text-slate-300 pt-2" style={{ fontFamily: "'DM Mono',monospace" }}>
+        <p className="text-center text-xs text-slate-400 pt-3" style={{ fontFamily: "'DM Mono',monospace" }}>
           {tasks.length} úkolů · {stats["hotovo"]} hotovo · {approvedCount} schváleno
           {overdueCount > 0 && ` · ⚠ ${overdueCount} po termínu`} · ☁ Supabase{isBoss && " · 🔒 šéfský mód"}
         </p>
